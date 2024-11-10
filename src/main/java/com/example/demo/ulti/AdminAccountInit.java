@@ -14,9 +14,9 @@ public class AdminAccountInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        Account account = new Account();
-//        account.setUsername("kandev");
-//        account.setPassword(new BCryptPasswordEncoder().encode("13122002"));
-//        accountRepository.save(account);
+        Account account = accountRepository.findByUsername("kandev").orElse(new Account());
+        account.setUsername("kandev");
+        account.setPassword(new BCryptPasswordEncoder().encode("13122002"));
+        accountRepository.save(account);
     }
 }

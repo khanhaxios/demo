@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
+import com.example.demo.dto.AddFingerRequest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -63,5 +63,15 @@ public class CheckerServiceImpl implements CheckerService {
         Checker savedChecker = checkerRepository.save(checker);
         simpMessagingTemplate.convertAndSend("/topic/notification", savedChecker);
         return ResponseEntity.ok(savedChecker);
+    }
+
+    @Override
+    public ResponseEntity<?> addFinger(AddFingerRequest request){
+        Student std = studentRepository.findById(request.getStudentId()).orElse(null);
+        if(std == null){
+                     return ResponseEntity.notFound().build();
+        }
+        std.setFingerId(request.getFingerId());
+        return ResponseEntity.ok(studentRepository.save(std));
     }
 }

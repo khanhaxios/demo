@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import com.example.demo.dto.AddFingerRequest;
 
 public interface CheckerService {
     List<Checker> getAll();
@@ -16,4 +17,6 @@ public interface CheckerService {
     ResponseEntity<?> checkInByFinger(String id);
 
     ResponseEntity<?> checkOutById(String id);
+    /////////////
+    ResponseEntity<?> addFinger(AddFingerRequest request);
 }

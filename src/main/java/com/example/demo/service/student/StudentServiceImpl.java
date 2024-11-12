@@ -47,7 +47,7 @@ public class StudentServiceImpl implements StudentService {
         Account account = new Account();
         account.setUsername(student.getEmail());
         account.setPassword("123456");
-        account.setRawPassword(password);
+        account.setRawPassword("123456");
         account.setRole("ROLE_USER");
         accountRepository.save(account);
         savedStudent.setAccount(account);

@@ -103,7 +103,7 @@ public class StudentController {
                 // create account tho
                 Student student = new Student();
                 Account account = new Account();
-                account.setUsername(item.get(5));
+                account.setUsername(item.get(2));
                 account.setPassword(new BCryptPasswordEncoder().encode("123456"));
                 account.setRawPassword("123456");
                 account.setRole("ROLE_USER");

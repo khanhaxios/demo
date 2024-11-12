@@ -13,7 +13,7 @@ public interface CheckerService {
 
     List<Checker> getAllByUser(Student student);
 
-    ResponseEntity<?> checkInByFinger(int id);
+    ResponseEntity<?> checkInByFinger(String id);
 
-    ResponseEntity<?> checkOutById(long id);
+    ResponseEntity<?> checkOutById(String id);
 }

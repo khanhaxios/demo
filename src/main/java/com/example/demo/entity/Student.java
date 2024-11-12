@@ -24,7 +24,7 @@ public class Student {
     private String sex;
 
     @Column
-    private int fingerId = -1;
+    private String fingerId;
 
     @Column
     private String phone;

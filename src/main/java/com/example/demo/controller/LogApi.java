@@ -14,7 +14,7 @@ public class LogApi {
     private final CheckerService checkerService;
 
     @PostMapping("check-in-by-finger/{id}")
-    ResponseEntity<?> checkIn(@PathVariable(name = "id") int id) {
+    ResponseEntity<?> checkIn(@PathVariable(name = "id") String  id) {
         try {
             return checkerService.checkInByFinger(id);
         } catch (Exception e) {
@@ -22,7 +22,7 @@ public class LogApi {
         }
     }
     @PostMapping("check-out-by-id{id}")
-    ResponseEntity<?> checkOut(@PathVariable(name = "id") int id) {
+    ResponseEntity<?> checkOut(@PathVariable(name = "id") String id) {
         try {
             return checkerService.checkOutById(id);
         } catch (Exception e) {

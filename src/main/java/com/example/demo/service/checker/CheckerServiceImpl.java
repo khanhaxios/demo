@@ -37,7 +37,7 @@ public class CheckerServiceImpl implements CheckerService {
     }
 
     @Override
-    public ResponseEntity<?> checkInByFinger(int id) {
+    public ResponseEntity<?> checkInByFinger(String id) {
         Student student = studentRepository.findByFingerId(id).orElse(null);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -54,7 +54,7 @@ public class CheckerServiceImpl implements CheckerService {
     }
 
     @Override
-    public ResponseEntity<?> checkOutById(long id) {
+    public ResponseEntity<?> checkOutById(String id) {
         Checker checker = checkerRepository.findById(id).orElse(null);
         if (checker == null) {
             return ResponseEntity.notFound().build();

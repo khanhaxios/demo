@@ -155,10 +155,10 @@
                                 <td th:text="${entity.sex}"></td>
                                 <td th:text="${entity.email}"></td>
                                 <td th:if="${entity.fingerId == -1}">
-                                    <div>Chưa đăng ký vân tay</div>
+                                    <div>Chưa có thông tin</div>
                                 </td>
                                 <td th:if="${entity.fingerId > 0}">
-                                    <div>Đã đăng ký vân tay</div>
+                                    <div>Đã đăng ký</div>
                                 </td>
                             </tr>
                             </tbody>

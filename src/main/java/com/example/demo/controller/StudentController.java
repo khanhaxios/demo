@@ -4,10 +4,12 @@ import com.example.demo.dto.AddAccountRequest;
 import com.example.demo.dto.SearchResponse;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Student;
+import com.example.demo.repotitory.AccountRepository;
 import com.example.demo.service.checker.CheckerService;
 import com.example.demo.service.student.StudentService;
 import com.example.demo.ulti.ExcelExportUtil;
 import com.example.demo.ulti.SecurityHelper;
+import com.example.demo.ulti.StringHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,7 @@ public class StudentController {
 
     private final ExcelExportUtil excelExportUtil;
     private final CheckerService checkerService;
+    private final AccountRepository accountRepository;
 
     @GetMapping("/reg-list")
     public String listFingerResgiter(Model model) {
@@ -94,8 +98,16 @@ public class StudentController {
     public ResponseEntity<?> importFromExcel(@RequestBody List<List<String>> data) throws Exception {
         try {
             List<Student> students = new ArrayList<>();
+            List<Account> accounts = new ArrayList<>();
             for (List<String> item : data) {
+                // create account tho
                 Student student = new Student();
+                Account account = new Account();
+                String password = StringHelper.generateString(12);
+                account.setUsername(StringHelper.generateString(8));
+                account.setPassword(new BCryptPasswordEncoder().encode(password));
+                account.setRawPassword(password);
+                account.setRole("ROLE_USER");
                 student.setName(item.get(0));
                 student.setClassName(item.get(1));
                 student.setId(item.get(2));
@@ -103,7 +115,10 @@ public class StudentController {
                 student.setSex(item.get(4));
                 student.setEmail(item.get(5));
                 students.add(student);
+                accounts.add(account);
+                student.setAccount(account);
             }
+            accountRepository.saveAll(accounts);
             studentService.addAll(students);
             return ResponseEntity.ok(new HashMap<>());
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import com.example.demo.repotitory.AccountRepository;
 import com.example.demo.repotitory.CheckerRepository;
 import com.example.demo.repotitory.StudentRepository;
 import com.example.demo.ulti.SecurityHelper;
+import com.example.demo.ulti.StringHelper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void addStudent(Student student) {
-        studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
+        String password = StringHelper.generateString(12);
+        Account account = new Account();
+        account.setUsername(StringHelper.generateString(8));
+        account.setPassword(new BCryptPasswordEncoder().encode(password));
+        account.setRawPassword(password);
+        account.setRole("ROLE_USER");
+        accountRepository.save(account);
+        savedStudent.setAccount(account);
+        studentRepository.save(savedStudent);
     }
 
     @Override
@@ -53,8 +63,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(String student) {
-        checkerRepository.deleteAllByStudent(studentRepository.findById(student).orElse(null));
-        studentRepository.deleteById(student);
+        Student s = studentRepository.findById(student).orElse(null);
+        if (s != null) {
+            checkerRepository.deleteAllByStudent(s);
+            studentRepository.deleteById(student);
+            accountRepository.deleteById(s.getAccount().getId());
+        }
     }
 
     @Override

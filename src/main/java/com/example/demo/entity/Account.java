@@ -20,6 +20,7 @@ public class Account implements UserDetails {
     private Long Id;
 
     private String password;
+    private String rawPassword;
     private String username;
     private String role = "ROLE_ADMIN";
 

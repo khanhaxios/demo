@@ -16,7 +16,7 @@ public interface CheckerService {
 
     ResponseEntity<?> checkInByFinger(String id);
 
-    ResponseEntity<?> checkOutById(String id);
+    ResponseEntity<?> checkOutById(long id);
     /////////////
     ResponseEntity<?> addFinger(AddFingerRequest request);
 }

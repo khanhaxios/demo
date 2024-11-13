@@ -54,7 +54,7 @@ public class CheckerServiceImpl implements CheckerService {
     }
 
     @Override
-    public ResponseEntity<?> checkOutById(String id) {
+    public ResponseEntity<?> checkOutById(long id) {
         Checker checker = checkerRepository.findById(id).orElse(null);
         if (checker == null) {
             return ResponseEntity.notFound().build();

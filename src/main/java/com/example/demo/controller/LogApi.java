@@ -24,7 +24,7 @@ public class LogApi {
         }
     }
     @PostMapping("check-out-by-id/{id}")
-    ResponseEntity<?> checkOut(@PathVariable(name = "id") String id) {
+    ResponseEntity<?> checkOut(@PathVariable(name = "id") long id) {
         try {
             return checkerService.checkOutById(id);
         } catch (Exception e) {

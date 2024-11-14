@@ -12,8 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.AddFingerRequest;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,12 +46,22 @@ public class CheckerServiceImpl implements CheckerService {
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
+        // get check in first
+        List<Checker> checkers = checkerRepository.findAllByStudent(student);
+        checkers.sort(Comparator.comparing(Checker::getTimeIn).reversed());
         Checker checker = new Checker();
-        checker.setDate(LocalDate.now());
-        checker.setStatus("Đã check in");
-        checker.setStudent(student);
-        checker.setTimeout(null);
-        checker.setTimeIn(LocalTime.now());
+
+        if (checkers.get(0).getTimeout() != null) {
+            checker.setDate(LocalDate.now());
+            checker.setStatus("Đã check in");
+            checker.setStudent(student);
+            checker.setTimeout(null);
+            checker.setTimeIn(LocalTime.now());
+        } else {
+            checker = checkers.get(0);
+            checker.setTimeout(LocalTime.now());
+            checker.setStatus("Đã checkout");
+        }
         Checker savedChecker = checkerRepository.save(checker);
         simpMessagingTemplate.convertAndSend("/topic/notification", savedChecker);
         return ResponseEntity.ok(savedChecker);
@@ -66,10 +80,10 @@ public class CheckerServiceImpl implements CheckerService {
     }
 
     @Override
-    public ResponseEntity<?> addFinger(AddFingerRequest request){
+    public ResponseEntity<?> addFinger(AddFingerRequest request) {
         Student std = studentRepository.findById(request.getStudentId()).orElse(null);
-        if(std == null){
-                     return ResponseEntity.notFound().build();
+        if (std == null) {
+            return ResponseEntity.notFound().build();
         }
         std.setFingerId(request.getFingerId());
         return ResponseEntity.ok(studentRepository.save(std));

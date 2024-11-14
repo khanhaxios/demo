@@ -58,6 +58,9 @@ public class StudentServiceImpl implements StudentService {
     public void editStudent(Student student) {
         Student student1 = studentRepository.findById(student.getId()).orElse(new Student());
         BeanUtils.copyProperties(student, student1, SecurityHelper.getNullPropertyNames(student));
+        if (student.getFingerId() != null) {
+            student1.setFingerId(student.getFingerId());
+        }
         studentRepository.save(student1);
     }
 

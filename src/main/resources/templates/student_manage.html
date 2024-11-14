@@ -174,6 +174,7 @@
                                 <th scope="col">Giới Tính</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Password</th>
+                                <th scope="col">FRID</th>
                                 <th scope="col">Chỉnh sửa</th>
                             </tr>
                             </thead>
@@ -185,14 +186,17 @@
                                 <td th:text="${entity.phone}"></td>
                                 <td th:text="${entity.sex}"></td>
                                 <td th:text="${entity.email}"></td>
-                                <td th:text="${entity.account.rawPassword}"></td>
+                                <td th:text="${entity.account.rawPassword}">
+                                <td th:text="${entity.fingerId}"></td>
                                 <td>
                                     <button class="edit-btn btn btn-outline-warning btn-xs mb-1" type="button" th:attr="data-user-card-id=${entity.getId()},data-user-name=${entity.getName()},
                                     data-user-class=${ entity.className },
                                     data-user-masv=${ entity.getId()},
                                     data-user-phone=${ entity.getPhone() },
                                     data-user-sex=${ entity.getSex() },
-                                    data-user-email=${entity.getEmail()}">
+                                    data-user-email=${entity.getEmail()},
+                                    data-finger=${entity.getFingerId()}
+">
                                         <i class="far fa-edit"></i>
                                     </button>
                                     <button th:attr="data-id=${entity.id}" class="btn btn-outline-danger  mb-1 btn-xs"
@@ -320,7 +324,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">RFID:</label>
-                        <input type="text" th:field="*{fingerId}" class="form-control" name="email">
+                        <input type="text" th:field="*{fingerId}" id="finger_id" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Giới tính:</label>
@@ -384,7 +388,8 @@
 
         $('.edit-btn').click(function () {
             var studentId = $(this).data('user-card-id');  // Lấy ID của sinh viên
-            var name = $(this).data('user-name');  // Lấy tên sinh viên
+            var name = $(this).data('user-name');
+            var fingerId = $(this).data('finger');  // Lấy tên sinh viên
             var className = $(this).data('user-class');  // Lấy lớp của sinh viên
             var masv = $(this).data('user-masv');  // Lấy mã sinh viên
             var phone = $(this).data('user-phone');  // Lấy số điện thoại
@@ -393,6 +398,8 @@
             // Điền thông tin vào các trường của form
             $('#edit-form').find('input[name="student_id"]').val(studentId);
             $('#edit-form').find('input[name="name"]').val(name);
+            $('#finger_id').val(fingerId);
+
             $('#edt_class').val(className);
             $('#edt_msv').val(masv);
             $('#edit-form').find('input[name="phone"]').val(phone);

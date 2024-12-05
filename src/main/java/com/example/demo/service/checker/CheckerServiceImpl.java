@@ -50,17 +50,24 @@ public class CheckerServiceImpl implements CheckerService {
         List<Checker> checkers = checkerRepository.findAllByStudent(student);
         checkers.sort(Comparator.comparing(Checker::getTimeIn).reversed());
         Checker checker = new Checker();
-
-        if (checkers.get(0).getTimeout() != null) {
+        if (checkers.size() == 0) {
             checker.setDate(LocalDate.now());
             checker.setStatus("Đã check in");
             checker.setStudent(student);
             checker.setTimeout(null);
             checker.setTimeIn(LocalTime.now());
         } else {
-            checker = checkers.get(0);
-            checker.setTimeout(LocalTime.now());
-            checker.setStatus("Đã checkout");
+            if (checkers.get(0).getTimeout() != null) {
+                checker.setDate(LocalDate.now());
+                checker.setStatus("Đã check in");
+                checker.setStudent(student);
+                checker.setTimeout(null);
+                checker.setTimeIn(LocalTime.now());
+            } else {
+                checker = checkers.get(0);
+                checker.setTimeout(LocalTime.now());
+                checker.setStatus("Đã checkout");
+            }
         }
         Checker savedChecker = checkerRepository.save(checker);
         simpMessagingTemplate.convertAndSend("/topic/notification", savedChecker);

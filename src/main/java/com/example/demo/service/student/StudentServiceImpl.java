@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
         String password = StringHelper.generateString(12);
         Account account = new Account();
         account.setUsername(student.getId());
-        account.setPassword("123456");
+        account.setPassword(new BCryptPasswordEncoder().encode("123456"));
         account.setRawPassword("123456");
         account.setRole("ROLE_USER");
         accountRepository.save(account);

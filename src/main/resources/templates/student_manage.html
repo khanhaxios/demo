@@ -174,7 +174,7 @@
                                 <th scope="col">Giới Tính</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Password</th>
-                                <th scope="col">FRID</th>
+                                <th scope="col">UID</th>
                                 <th scope="col">Chỉnh sửa</th>
                             </tr>
                             </thead>
@@ -184,7 +184,7 @@
                                 <td th:text="${entity.id}"></td>
                                 <td th:text="${entity.className}"></td>
                                 <td th:text="${entity.phone}"></td>
-                                <td th:text="${entity.sex}"></td>
+                                <td th:text="${entity.sex == 'male' ? 'Nam' : 'Nữ'}"></td>
                                 <td th:text="${entity.email}"></td>
                                 <td th:text="${entity.account.rawPassword}">
                                 <td th:text="${entity.fingerId}"></td>

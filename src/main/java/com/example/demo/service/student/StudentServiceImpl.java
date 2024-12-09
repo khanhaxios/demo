@@ -43,7 +43,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void addStudent(Student student) {
         Student savedStudent = studentRepository.save(student);
-        String password = StringHelper.generateString(12);
         Account account = new Account();
         account.setUsername(student.getId());
         account.setPassword(new BCryptPasswordEncoder().encode("123456"));
